@@ -1,7 +1,5 @@
 import { LitElement, html } from 'lit';
 
-import storage from '../services/storage.js';
-
 import styles from './todo-list-styles.js';
 
 export default class TodoList extends LitElement {
@@ -32,27 +30,31 @@ export default class TodoList extends LitElement {
       <li class="todo-list-item">
         ${text}
         <span
-          @click=${() => this.toggleCompleted(id)}
+          @click=${() => this.dispatchCustomEvent(id, 'toggle-completed')}
           @keyup=${onkeydown}
           class="todo-list-item-icon"
           >${icon}</span
         >
-        <button @click=${() => this.deleteToDo(id)} class="btn delete">
+        <button
+          @click=${() => this.dispatchCustomEvent(id, 'delete-todo')}
+          class="btn delete"
+        >
           Delete
         </button>
       </li>
     `;
   }
 
-  deleteToDo(id) {
-    this.todos = this.todos.filter(todo => todo.id !== id);
-    storage.setTodos(this.todos);
-  }
+  dispatchCustomEvent(id, eventName) {
+    const event = new CustomEvent(eventName, {
+      detail: {
+        id,
+      },
+      bubbles: true,
+      composed: true,
+    });
 
-  toggleCompleted(id) {
-    const todoToChangeCompleted = this.todos.find(todo => todo.id === id);
-    todoToChangeCompleted.completed = !todoToChangeCompleted.completed;
-    this.requestUpdate();
+    this.dispatchEvent(event);
   }
 }
 

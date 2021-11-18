@@ -21,6 +21,20 @@ export class TodoListApp extends LitElement {
   constructor() {
     super();
     this.todos = storage.getTodos();
+
+    this.registerEvents();
+  }
+
+  registerEvents() {
+    this.addEventListener('toggle-completed', event => {
+      const idTodoToToggle = event.detail.id;
+      this.toggleCompleted(idTodoToToggle);
+    });
+
+    this.addEventListener('delete-todo', event => {
+      const idTodoDelete = event.detail.id;
+      this.deleteToDo(idTodoDelete);
+    });
   }
 
   render() {
@@ -36,25 +50,6 @@ export class TodoListApp extends LitElement {
     </div>`;
   }
 
-  getListItem(todo) {
-    const { id, text, completed } = todo;
-    const icon = completed ? html`&#9989;` : html`&#10060;`;
-    return html`
-      <li class="todo-list-item">
-        ${text}
-        <span
-          @click=${() => this.toggleCompleted(id)}
-          @keyup=${onkeydown}
-          class="todo-list-item-icon"
-          >${icon}</span
-        >
-        <button @click=${() => this.deleteToDo(id)} class="btn delete">
-          Delete
-        </button>
-      </li>
-    `;
-  }
-
   get input() {
     return this.renderRoot?.querySelector('#newitem') ?? null;
   }
@@ -68,7 +63,6 @@ export class TodoListApp extends LitElement {
       };
       this.todos = [...this.todos, newTodo];
       this.input.value = '';
-      storage.setTodos(this.todos);
     } else {
       // TODO: Mostrar mensaje de todo vacío
     }
@@ -76,18 +70,15 @@ export class TodoListApp extends LitElement {
 
   deleteToDo(id) {
     this.todos = this.todos.filter(todo => todo.id !== id);
-    storage.setTodos(this.todos);
   }
 
   toggleCompleted(id) {
-    const todoToChangeCompleted = this.todos.find(todo => todo.id === id);
-    todoToChangeCompleted.completed = !todoToChangeCompleted.completed;
-    this.requestUpdate();
+    this.todos = this.todos.map(todo =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+  }
+
+  updated() {
+    storage.setTodos(this.todos);
   }
 }
-
-// <!-- <ul class="todo-list">
-// ${this.todos.length !== 0
-// ? this.todos.map(todo => html`${this.getListItem(todo)}`)
-// : html`<h2>No hay ToDos, crea uno!</h2>`}
-// </ul> -->
