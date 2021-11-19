@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
 
 import './components/todo-list.js';
+import './components/button.js';
 
 import storage from './services/storage.js';
 
@@ -44,7 +45,9 @@ export class TodoListApp extends LitElement {
         <todo-list .todos=${this.todos}></todo-list>
         <div class="input-wrapper">
           <input class="input-name" id="newitem" aria-label="New item" />
-          <button class="btn add" @click=${this.addToDo}>Add</button>
+          <custom-button @click=${this.addToDo} variant="primary"
+            >Add</custom-button
+          >
         </div>
       </div>
     </div>`;
@@ -66,6 +69,8 @@ export class TodoListApp extends LitElement {
     } else {
       // TODO: Mostrar mensaje de todo vacío
     }
+
+    this.input.focus();
   }
 
   deleteToDo(id) {

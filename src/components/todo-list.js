@@ -1,5 +1,7 @@
 import { LitElement, html } from 'lit';
 
+import './button.js';
+
 import styles from './todo-list-styles.js';
 
 export default class TodoList extends LitElement {
@@ -14,16 +16,20 @@ export default class TodoList extends LitElement {
   }
 
   render() {
+    return this.getTodoListTemplate();
+  }
+
+  getTodoListTemplate() {
     return html`
       <ul class="todo-list">
         ${this.todos.length !== 0
-          ? this.todos.map(todo => html`${this.getListItem(todo)}`)
+          ? this.todos.map(todo => html`${this.getListItemTemplate(todo)}`)
           : html`<h2 class="todo-list-noTodos">No hay ToDos, crea uno!</h2>`}
       </ul>
     `;
   }
 
-  getListItem(todo) {
+  getListItemTemplate(todo) {
     const { id, text, completed } = todo;
     const icon = completed ? html`&#9989;` : html`&#10060;`;
     return html`
@@ -35,12 +41,12 @@ export default class TodoList extends LitElement {
           class="todo-list-item-icon"
           >${icon}</span
         >
-        <button
+        <custom-button
           @click=${() => this.dispatchCustomEvent(id, 'delete-todo')}
-          class="btn delete"
+          variant="danger"
         >
           Delete
-        </button>
+        </custom-button>
       </li>
     `;
   }

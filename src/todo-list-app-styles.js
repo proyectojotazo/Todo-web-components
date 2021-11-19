@@ -29,18 +29,6 @@ export default css`
     width: 300px;
   }
 
-  .btn {
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 0.5rem;
-    width: 60px;
-  }
-
-  .add {
-    background-color: green;
-  }
-
   .input-wrapper {
     border-top: 1px solid black;
     display: flex;

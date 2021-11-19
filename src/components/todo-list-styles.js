@@ -29,16 +29,4 @@ export default css`
     margin-right: 0.5rem;
     font-size: 14px;
   }
-
-  .btn {
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 0.5rem;
-    width: 60px;
-  }
-
-  .delete {
-    background-color: red;
-  }
 `;
