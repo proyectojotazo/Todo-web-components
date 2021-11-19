@@ -33,7 +33,7 @@ export default css`
     border-top: 1px solid black;
     display: flex;
     justify-content: space-between;
-    padding-top: 0.5rem;
+    padding-top: 1rem;
     width: 100%;
   }
 

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import './components/todo-list.js';
 import './components/button.js';
+import './components/span-msg.js';
 
 import storage from './services/storage.js';
 
@@ -12,6 +13,10 @@ export class TodoListApp extends LitElement {
   static get properties() {
     return {
       todos: { type: Array },
+      isSpanMsgHidden: { type: Boolean },
+      spanMsg: { type: String },
+      spanVariant: { type: String },
+      spanTimer: { type: Number },
     };
   }
 
@@ -22,6 +27,7 @@ export class TodoListApp extends LitElement {
   constructor() {
     super();
     this.todos = storage.getTodos();
+    this.isSpanMsgHidden = true;
 
     this.registerEvents();
   }
@@ -35,6 +41,7 @@ export class TodoListApp extends LitElement {
     this.addEventListener('delete-todo', event => {
       const idTodoDelete = event.detail.id;
       this.deleteToDo(idTodoDelete);
+      this.setSpanMsg('success', 'ToDo borrado con éxito');
     });
   }
 
@@ -44,17 +51,51 @@ export class TodoListApp extends LitElement {
       <div class="todo-container">
         <todo-list .todos=${this.todos}></todo-list>
         <div class="input-wrapper">
-          <input class="input-name" id="newitem" aria-label="New item" />
+          <input
+            @input=${() => {
+              this.resetSpan();
+            }}
+            class="input-name"
+            id="newitem"
+            aria-label="New item"
+          />
           <custom-button @click=${this.addToDo} variant="primary"
             >Add</custom-button
           >
         </div>
+        ${this.getSpan()}
       </div>
     </div>`;
   }
 
   get input() {
     return this.renderRoot?.querySelector('#newitem') ?? null;
+  }
+
+  getSpan() {
+    return !this.isSpanMsgHidden
+      ? html`<span-msg variant=${this.spanVariant}> ${this.spanMsg} </span-msg>`
+      : html``;
+  }
+
+  setSpanMsg(variant, text) {
+    this.isSpanMsgHidden = false;
+    this.spanVariant = variant;
+    this.spanMsg = text;
+
+    // Creamos un temporizador que nos ocultará el mensaje ya sea de error o éxito
+    this.spanTimer = setTimeout(() => {
+      this.isSpanMsgHidden = true;
+    }, 2000);
+  }
+
+  resetSpan() {
+    this.isSpanMsgHidden = true;
+    this.spanVariant = '';
+    this.spanMsg = '';
+
+    // Limpiamos el temporizador en caso de que cambie el valor del input
+    clearTimeout(this.spanTimer);
   }
 
   addToDo() {
@@ -66,8 +107,10 @@ export class TodoListApp extends LitElement {
       };
       this.todos = [...this.todos, newTodo];
       this.input.value = '';
+      this.setSpanMsg('success', 'ToDo creado con éxito!');
     } else {
       // TODO: Mostrar mensaje de todo vacío
+      this.setSpanMsg('error', 'No se puede crear un ToDo vacío');
     }
 
     this.input.focus();
