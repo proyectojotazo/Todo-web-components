@@ -1,12 +1,6 @@
 import { css } from 'lit';
 
 export default css`
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
   .container {
     background-color: #ccc;
     display: flex;
@@ -26,20 +20,19 @@ export default css`
   }
 
   .todo-container {
-    width: 300px;
+    width: 500px;
   }
 
-  .input-wrapper {
-    border-top: 1px solid black;
+  .radio-wrapper {
     display: flex;
-    justify-content: space-between;
-    padding-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
     width: 100%;
+    gap: 1.5rem;
   }
 
-  .input-name {
-    outline: none;
-    border: none;
-    padding-left: 0.3rem;
+  .hidden {
+    visibility: hidden;
   }
 `;

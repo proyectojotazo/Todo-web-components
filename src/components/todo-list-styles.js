@@ -12,7 +12,7 @@ export default css`
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     list-style: none;
   }
 
@@ -28,5 +28,9 @@ export default css`
     margin-left: auto;
     margin-right: 0.5rem;
     font-size: 14px;
+  }
+
+  .completed {
+    text-decoration: line-through;
   }
 `;

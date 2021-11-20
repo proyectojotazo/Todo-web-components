@@ -2,10 +2,12 @@ import { css } from 'lit';
 
 export default css`
   .span-msg {
-    display: block;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 8px;
-    margin-top: 1.5rem;
-    padding: 0.5rem;
+    height: 38.4px;
     text-align: center;
   }
 
@@ -22,6 +24,6 @@ export default css`
   }
 
   .hidden {
-    display: none;
+    visibility: hidden;
   }
 `;

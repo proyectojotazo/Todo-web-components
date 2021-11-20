@@ -6,6 +6,7 @@ export default class SpanMsg extends LitElement {
   static get properties() {
     return {
       variant: { type: String },
+      text: { type: String },
     };
   }
 
@@ -15,14 +16,8 @@ export default class SpanMsg extends LitElement {
 
   render() {
     return html`
-      <span class=${this.getStylesClass()}>
-        <slot></slot>
-      </span>
+      <span class=${`span-msg ${this.variant}`}>${this.text}</span>
     `;
-  }
-
-  getStylesClass() {
-    return this.variant ? `span-msg ${this.variant}` : 'span-msg';
   }
 }
 

@@ -8,6 +8,7 @@ export default class TodoList extends LitElement {
   static get properties() {
     return {
       todos: { type: Array },
+      radioSelected: { type: String },
     };
   }
 
@@ -24,7 +25,7 @@ export default class TodoList extends LitElement {
       <ul class="todo-list">
         ${this.todos.length !== 0
           ? this.todos.map(todo => html`${this.getListItemTemplate(todo)}`)
-          : html`<h2 class="todo-list-noTodos">No hay ToDos, crea uno!</h2>`}
+          : html`<h2 class="todo-list-noTodos">${this.getEmptyTodosMsg()}</h2>`}
       </ul>
     `;
   }
@@ -34,7 +35,9 @@ export default class TodoList extends LitElement {
     const icon = completed ? html`&#9989;` : html`&#10060;`;
     return html`
       <li class="todo-list-item">
-        ${text}
+        <p class=${`todo-list-item-text ${completed && 'completed'}`}>
+          ${text}
+        </p>
         <span
           @click=${() => this.dispatchCustomEvent(id, 'toggle-completed')}
           @keyup=${onkeydown}
@@ -49,6 +52,15 @@ export default class TodoList extends LitElement {
         </custom-button>
       </li>
     `;
+  }
+
+  getEmptyTodosMsg() {
+    // eslint-disable-next-line no-nested-ternary
+    return this.radioSelected === 'all'
+      ? 'No todos yet, start creating your own!'
+      : this.radioSelected === 'completed'
+      ? 'No todos completed'
+      : 'No todos uncompleted';
   }
 
   dispatchCustomEvent(id, eventName) {
