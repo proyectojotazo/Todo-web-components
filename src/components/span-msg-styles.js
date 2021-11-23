@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export default css`
   .span-msg {
-    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;

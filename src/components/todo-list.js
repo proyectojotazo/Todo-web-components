@@ -3,6 +3,7 @@ import { LitElement, html } from 'lit';
 import './button.js';
 
 import styles from './todo-list-styles.js';
+import resetStyles from '../reset-styles.js';
 
 export default class TodoList extends LitElement {
   static get properties() {
@@ -13,7 +14,7 @@ export default class TodoList extends LitElement {
   }
 
   static get styles() {
-    return styles;
+    return [resetStyles, styles];
   }
 
   render() {

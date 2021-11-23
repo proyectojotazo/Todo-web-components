@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export default css`
   .input-wrapper {
+    align-items: center;
     border-bottom: 1px solid black;
     display: flex;
     justify-content: space-between;

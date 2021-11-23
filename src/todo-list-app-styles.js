@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export default css`
   .container {
-    background-color: #ccc;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,6 +16,7 @@ export default css`
     padding-bottom: 1rem;
     text-align: center;
     width: 100%;
+    letter-spacing: 1px;
   }
 
   .todo-container {
@@ -34,5 +34,21 @@ export default css`
 
   .hidden {
     visibility: hidden;
+  }
+
+  @media all and (max-width: 631px) {
+    .container {
+      width: 95%;
+    }
+
+    .todo-container {
+      width: 100%;
+    }
+  }
+
+  @media all and (max-width: 470px) {
+    .radio-wrapper {
+      flex-direction: column;
+    }
   }
 `;

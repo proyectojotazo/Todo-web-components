@@ -2,34 +2,45 @@ import { LitElement, html } from 'lit';
 import { v4 as uuidv4 } from 'uuid';
 
 import './button.js';
+import './custom-input-text.js';
 
 import styles from './form-add-todo-styles.js';
+import resetStyles from '../reset-styles.js';
 
 export default class FormAddTodo extends LitElement {
   static get styles() {
-    return styles;
+    return [resetStyles, styles];
   }
 
   render() {
-    return html` <form
-      @submit=${this.dispatchCustomEvent}
-      novalidate
-      class="input-wrapper"
-    >
-      <input
-        class="input-name"
-        id="newitem"
-        aria-label="New item"
+    return html` <form novalidate class="input-wrapper">
+      <custom-input-text
         placeholder="Add new ToDo"
-      />
-      <custom-button @click=${this.dispatchCustomEvent} variant="primary"
+        ?cleanBtn=${true}
+      ></custom-input-text>
+      <custom-button
+        @click=${this.dispatchCustomEvent}
+        size="full-width"
+        bgColor="primary"
         >Add</custom-button
       >
     </form>`;
   }
 
   get input() {
-    return this.renderRoot?.querySelector('#newitem') ?? null;
+    return (
+      this.renderRoot
+        ?.querySelector('custom-input-text')
+        .shadowRoot.querySelector('input') ?? null
+    );
+  }
+
+  get spanClearBtn() {
+    return (
+      this.renderRoot
+        ?.querySelector('custom-input-text')
+        .shadowRoot.querySelector('span') ?? null
+    );
   }
 
   dispatchCustomEvent(event) {
@@ -41,19 +52,26 @@ export default class FormAddTodo extends LitElement {
       completed: false,
     };
 
-    const newEvent = new CustomEvent('add-todo', {
-      detail: {
-        newTodo,
-        error: this.input.value === '',
-      },
-      bubbles: true,
-      composed: true,
+    const newEvent = this.createEvent('add-todo', {
+      newTodo,
+      error: this.input.value === '',
     });
 
     this.dispatchEvent(newEvent);
 
+    // Reseting custom-input
     this.input.value = '';
     this.input.focus();
+    this.spanClearBtn?.classList.add('hidden');
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  createEvent(eventName, detail) {
+    return new CustomEvent(eventName, {
+      detail,
+      bubbles: true,
+      composed: true,
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 
 import styles from './span-msg-styles.js';
+import resetStyles from '../reset-styles.js';
 
 export default class SpanMsg extends LitElement {
   static get properties() {
@@ -11,7 +12,7 @@ export default class SpanMsg extends LitElement {
   }
 
   static get styles() {
-    return styles;
+    return [resetStyles, styles];
   }
 
   render() {

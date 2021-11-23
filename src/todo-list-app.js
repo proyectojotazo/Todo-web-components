@@ -1,5 +1,7 @@
 import { LitElement, html } from 'lit';
 
+import resetStyles from './reset-styles.js';
+
 import './components/span-msg.js';
 import './components/input-radio-labeled.js';
 import './components/form-add-todo.js';
@@ -18,7 +20,7 @@ export class TodoListApp extends LitElement {
   }
 
   static get styles() {
-    return styles;
+    return [resetStyles, styles];
   }
 
   constructor() {
@@ -66,7 +68,7 @@ export class TodoListApp extends LitElement {
     return html` <div class="container">
       <h2 class="todo-title">ToDo Creator</h2>
       <div class="todo-container">
-        <span-msg variant="hidden"></span-msg>
+        <span-msg variant="error" text="hola"></span-msg>
         <div class=${`radio-wrapper ${this.todos.length === 0 && 'hidden'}`}>
           <input-radio-labeled
             radioValue="all"
@@ -125,12 +127,12 @@ export class TodoListApp extends LitElement {
      * pasado X tiempo. Tambien nos lo reiniciará y limpiará el timer
      */
     this.spanTimer = setTimeout(() => {
-      this.resetSpan();
+      this.resetSpanMsg();
       clearTimeout(this.spanTimer);
     }, 1500);
   }
 
-  resetSpan() {
+  resetSpanMsg() {
     this.spanMsg.setAttribute('variant', 'hidden');
     this.spanMsg.setAttribute('text', '');
   }
@@ -151,5 +153,6 @@ export class TodoListApp extends LitElement {
 
   updated() {
     storage.setTodos(this.todos);
+    this.todosToShow = this.todos.length === 0 ? 'all' : this.todosToShow;
   }
 }

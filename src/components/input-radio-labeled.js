@@ -1,9 +1,5 @@
 import { LitElement, html } from 'lit';
 
-// TODO: Add styles?
-
-// import styles from './input-radio-labeled-styles.js';
-
 export class InputRadioLabeled extends LitElement {
   static get properties() {
     return {
@@ -12,15 +8,9 @@ export class InputRadioLabeled extends LitElement {
     };
   }
 
-  // static get styles() {
-  //   return styles;
-  // }
-
   render() {
     return html`
-      <label for=${this.radioValue} class="radio-label"
-        >Show ${this.radioValue}</label
-      >
+      <label for=${this.radioValue}>Show ${this.radioValue}</label>
       <input
         type="radio"
         @click=${() => this.dispatchCustomEvent()}
