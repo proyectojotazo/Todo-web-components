@@ -68,7 +68,7 @@ export class TodoListApp extends LitElement {
     return html` <div class="container">
       <h2 class="todo-title">ToDo Creator</h2>
       <div class="todo-container">
-        <span-msg variant="error" text="hola"></span-msg>
+        <span-msg variant="hidden"></span-msg>
         <div class=${`radio-wrapper ${this.todos.length === 0 && 'hidden'}`}>
           <input-radio-labeled
             radioValue="all"
